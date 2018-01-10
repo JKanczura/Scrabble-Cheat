@@ -4,45 +4,38 @@ from itertools import permutations
 def main():
 
     letters = raw_input("Input the letters in your rack:\n")
-    options = list( [''.join(i) for i in permutations(letters)])
-    words = list()
+    options = list([''.join(i) for i in permutations(letters, 2)])
+    for p in xrange(3, len(letters)):
+        options.extend(list([''.join(j) for j in permutations(letters, p)]))
+
     for data in options:
-        if (isWord(data) == True):
-            words.append(data)
-    print words
+        if isword(data):
+            print data + " ", playscrabble(data)
 
-
-
-def isWord(x):
+def isword(x):
     d = enchant.Dict("en_US")
     return d.check(x)
 
-def playScrabble(x):
-    '''
-    A = 1
-    B = 3
-    C = 3
-    D = 2
-    E = 1
-    F = 4
-    G = 2
-    H = 4
-    I = 1
-    J = 8
-    K = 5
-    L = 1
-    M = 3
-    N = 1
-    O = 1
-    P = 3
-    Q = 10
-    R = 1
-    S = 1
-    T = 1
-    U = 1
-    V = 4
-    W = 4
-    X = 8
-    Y = 4
-    Z = 10
-    '''
+
+def playscrabble(x):
+
+    length = len(x)
+    count = 0
+
+    for y in xrange(0, length, 1):
+        if (x[y] == 'a') or (x[y] == 'e') or (x[y] == 'i') or (x[y] == 'l') or (x[y] == 'n') or (x[y] == 'o') or (x[y] == 'r') or (x[y] == 's') or (x[y] == 't') or (x[y] == 'u'):
+            count += 1
+        elif (x[y] == 'd') or (x[y] == 'g'):
+            count += 2
+        elif (x[y] == 'b') or (x[y] == 'c') or (x[y] == 'm') or (x[y] == 'p'):
+            count += 3
+        elif (x[y] == 'f') or (x[y] == 'h') or (x[y] == 'v') or (x[y] == 'w') or (x[y] == 'y'):
+            count += 4
+        elif x[y] == 'k':
+            count += 5
+        elif (x[y] == 'j') or (x[y] == 'x'):
+            count += 8
+        elif (x[y] == 'q') or (x[y] == 'z'):
+            count += 10
+
+    return count
